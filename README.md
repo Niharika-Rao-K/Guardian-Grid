@@ -79,6 +79,7 @@ If an unrecognized face is detected, the system captures the image, sends an <b>
 </ul>
 
 <p align="center">
+  <h2> Circuit Diagram <h2>
   <img src="https://github.com/user-attachments/assets/4207c2bc-b0c6-43ee-8599-85fbbbcc7428" width="660" height="400" alt="Guardian Grid System Diagram">
 </p>
 
