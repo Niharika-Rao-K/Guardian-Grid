@@ -1,86 +1,149 @@
-# Guardian-Grid
-The primary objective of this project is to design and develop an intelligent anti-theft security system using an IoT-enabled floormat integrated with face recognition technology
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
+<style>
+  body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #0d1117;
+    color: #e6edf3;
+    line-height: 1.7;
+  }
+  h1, h2, h3 {
+    color: #58a6ff;
+    font-weight: 600;
+  }
+  h1 {
+    font-size: 2.4em;
+    margin-top: 30px;
+  }
+  h3 {
+    color: #8b949e;
+    font-weight: 400;
+  }
+  ul li, ol li {
+    margin-bottom: 8px;
+  }
+  table {
+    border-collapse: collapse;
+    width: 85%;
+    margin: 20px auto;
+    background-color: #161b22;
+    color: #e6edf3;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  td {
+    border: 1px solid #30363d;
+    padding: 10px 12px;
+  }
+  code {
+    background-color: transparent;
+    color: #58a6ff;
+    font-style: italic;
+  }
+  p, li {
+    font-size: 1.05em;
+  }
+</style>
 
-Hardware Requirements:
+<h1 align="center">🛡️ Guardian-Grid</h1>
+<h3 align="center">An Intelligent IoT-Enabled Anti-Theft Floor Mat with Face Recognition</h3>
 
-●	A PC with the following or greater specifications:
+---
 
-o	Intel Core i3 or higher
+<h2>🎯 Project Overview</h2>
+<p>
+<b>Guardian-Grid</b> is an IoT-based smart security system designed to prevent unauthorized access. 
+It integrates a <b>piezoelectric floor mat</b> that detects footsteps and a <b>face recognition system</b> that identifies the person in real-time. 
+If an unrecognized face is detected, the system captures the image, sends an <b>SMS alert</b> via a GSM module, and logs all events for review.
+</p>
 
-o	8 GB RAM
+---
 
-o	500 GB Hard Drive
+<h2>⚙️ Hardware Requirements</h2>
+<ul>
+  <li><b>PC:</b> Intel Core i3 or higher, 8 GB RAM, 500 GB HDD</li>
+  <li><b>Internet:</b> Minimum 2 Mbps</li>
+  <li><b>Raspberry Pi 4</b></li>
+  <li><b>Pi Camera</b></li>
+  <li><b>Piezo Sensor</b></li>
+  <li><b>GSM Module</b> (with Antenna)</li>
+  <li><b>MicroSD Card:</b> 16 GB or more</li>
+  <li><b>Power Supply</b> & Jumper Wires</li>
+</ul>
 
-●	A stable internet connection (2Mbps or higher)
+---
 
-●	Raspberry Pi 4 
+<h2>💻 Software Requirements</h2>
+<table>
+  <tr><td><b>Operating System</b></td><td>Windows, Raspberry Pi OS</td></tr>
+  <tr><td><b>IDE</b></td><td>VS Code, Sublime Text</td></tr>
+  <tr><td><b>Programming Language</b></td><td>Python</td></tr>
+  <tr><td><b>Libraries</b></td><td>OpenCV, Haarcascade, Numpy, PySerial</td></tr>
+  <tr><td><b>Machine Learning Model</b></td><td>Local Binary Patterns Histogram (LBPH)</td></tr>
+</table>
 
-●	Pi Camera
+---
 
-●	Piezo sensor
+<h2>📂 Project File Structure</h2>
+<ul>
+  <li><b>capture_images.py</b> – Captures 20 face images per person and stores them in <i>dataset/</i></li>
+  <li><b>train_model.py</b> – Trains the LBPH model using captured faces</li>
+  <li><b>Face_recog_lbph.py</b> – Performs real-time face recognition</li>
+  <li><b>recognize_face_sensor.py</b> – Triggers face recognition via piezo mat; sends alerts and logs results</li>
+  <li><b>dataset/</b> – Contains face images for each individual</li>
+  <li><b>logs/</b> – Contains timestamped images of detections</li>
+</ul>
 
-●	Jumper Wires
+<p align="center">
+  <h2>Circuit Diagram</h2>
+  <img src="https://github.com/user-attachments/assets/4207c2bc-b0c6-43ee-8599-85fbbbcc7428" width="660" height="400" alt="Guardian Grid System Diagram">
+</p>
 
-●	Power Supply
+---
 
-●	MicroSD Card (at least 16GB)
+<h2>🤖 Machine Learning Model: LBPH (Local Binary Patterns Histograms)</h2>
 
-●	GSM Module (with Antenna)
+<h3>📘 Model Type</h3>
+<p>LBPH — a classical computer vision algorithm for facial recognition, optimized for embedded hardware.</p>
 
+<h3>💡 Why LBPH?</h3>
+<ul>
+  <li>Lightweight and efficient for Raspberry Pi</li>
+  <li>Works well with grayscale images</li>
+  <li>Robust against lighting and expression variations</li>
+</ul>
 
-Software Requirements:
+<h3>⚙️ How It Works</h3>
+<ol>
+  <li>Divides an image into small grids</li>
+  <li>Compares each pixel with neighbors to form binary patterns</li>
+  <li>Builds histograms for each grid region</li>
+  <li>Concatenates them into a single feature vector</li>
+  <li>Compares new faces using distance metrics like Euclidean distance</li>
+</ol>
 
-•	Operating system	                   : Windows, Raspberry Pi OS
+<h3>🧠 Training Step</h3>
+<p>
+Images captured by <i>capture_images.py</i> are labeled and trained using <i>train_model.py</i> with OpenCV’s 
+<b>cv2.face.LBPHFaceRecognizer_create()</b>.
+</p>
 
-•	IDE                                           : VS Code, Sublime text
+<h3>🔍 Prediction Step</h3>
+<p>
+When the piezo sensor detects pressure, <i>recognize_face_sensor.py</i> activates the camera and checks for known faces, logging results automatically.
+</p>
 
-•	Language                                  : Python
+<h3>🚫 No Deep Learning Required</h3>
+<ul>
+  <li>No GPU or large datasets needed</li>
+  <li>Ideal for <b>Edge AI</b> and low-power IoT systems</li>
+</ul>
 
-•	Libraries of Python                   : OpenCV, Haarcascade, Numpy, PySerial(for UART communication with the GSM module)
+---
 
-•	Machine Learning Model used : Local Binary Patterns Histogram(LBPH)
-
-<img width="660" height="400" alt="image" src="https://github.com/user-attachments/assets/4207c2bc-b0c6-43ee-8599-85fbbbcc7428" />
-
-Files present:
-1.	capture_images.py- Asks for name of person and captures 20 pictures of him and stores it as a folder with his name inside the dataset folder
-   
-   How to run: python3 capture_images.py
-3.	train_model.py-Trains the RPi with the photos captures by capture_images.py
-
-   How to run: python3 train_model.py
-5.	Face_recog_lbph.py-Performs real-time face recognition using OpenCV
-
-   How to run: python3 Face_recog_lbph.py
-7.	recognize_face_sensor.py- This Python code is designed for a Raspberry Pi-based face recognition security system. It uses a piezo sensor to detect if someone steps on a mat, triggering the PiCamera2 to capture an image. The captured image is analyzed using OpenCV's LBPH face recognizer and a Haar Cascade classifier to detect and recognize faces. If the face is unknown, the system saves the image, sends an SMS alert using a GSM module, and sends an email with the image attachment. Recognized faces are labeled and logged without alerts. The system continuously monitors the sensor and logs all detections with timestamps, enhancing home or lab security with real-time alerts.
-
-   How to run: python3 recognize_face_sensor.py
-   
-  RUN THIS CODE AND PERFORM THE EXPERIMENT
-9.	Dataset folder- stores images of people
-10.	Logs folder- stores both recognized and unrecognized face photos with date & time.
-
-
-Machine Learning Model Used: LBPH (Local Binary Patterns Histograms)
-1.	Model Type:
-•	Local Binary Patterns Histograms (LBPH) — a classic computer vision-based face recognition algorithm.
-2.	Why LBPH is used:
-•	Lightweight and fast — ideal for low-power devices like Raspberry Pi.
-•	Works well with grayscale images and small datasets.
-•	Robust against lighting variations and facial expressions.
-3.	How It Works:
-•	Divides image into grids and compares each pixel with its neighbors.
-•	Generates a binary pattern based on intensity differences.
-•	Builds histograms of these patterns for each region and concatenates them into a feature vector.
-•	Uses Euclidean distance (or similar) to compare new faces with trained ones.
-4.	Training Step:
-•	Implemented using train_model.py with images captured and labeled using capture_images.py.
-•	Model is trained using OpenCV’s cv2.face.LBPHFaceRecognizer_create().
-5.	Prediction Step:
-•	recognize_face_sensor.py loads the trained model and predicts face ID when triggered by the piezo sensor.
-6.	No Deep Learning Required:
-•	Unlike CNNs or DNNs, LBPH does not require GPU or large datasets.
-•	Makes it ideal for edge AI and embedded systems.
+<h2 align="center">🧩 Conclusion</h2>
+<p align="center">
+<b>Guardian-Grid</b> merges sensor technology and facial recognition to create a responsive, affordable, and intelligent anti-theft system designed for modern homes and labs.
+</p>
 
 
